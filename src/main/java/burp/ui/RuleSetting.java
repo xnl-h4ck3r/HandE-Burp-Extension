@@ -9,7 +9,7 @@ import java.awt.*;
 import burp.Config;
 
 /**
- * @author LinChen
+ * @author LinChen  
  */
 
 public class RuleSetting extends JPanel {
@@ -35,31 +35,31 @@ public class RuleSetting extends JPanel {
 
         engineLabel.setText("Engine:");
         add(engineLabel);
-        engineLabel.setBounds(new Rectangle(new Point(10, 175), engineLabel.getPreferredSize()));
+        engineLabel.setBounds(new Rectangle(new Point(2, 175), engineLabel.getPreferredSize()));
 
-        sensitiveLabel.setText("Sensitive:");
+        sensitiveLabel.setText("Case Sens.:");
         add(sensitiveLabel);
-        sensitiveLabel.setBounds(new Rectangle(new Point(10,215), sensitiveLabel.getPreferredSize()));
+        sensitiveLabel.setBounds(new Rectangle(new Point(2,215), sensitiveLabel.getPreferredSize()));
 
         scopeLabel.setText("Scope:");
         add(scopeLabel);
-        scopeLabel.setBounds(new Rectangle(new Point(10, 135), scopeLabel.getPreferredSize()));
+        scopeLabel.setBounds(new Rectangle(new Point(2, 135), scopeLabel.getPreferredSize()));
         add(regexTextField);
-        regexTextField.setBounds(70, 50, 265, 30);
+        regexTextField.setBounds(90, 50, 350, 30);
 
         regexLabel.setText("Regex:");
         add(regexLabel);
-        regexLabel.setBounds(new Rectangle(new Point(10, 55), regexLabel.getPreferredSize()));
+        regexLabel.setBounds(new Rectangle(new Point(2, 55), regexLabel.getPreferredSize()));
 
         nameLabel.setText("Name:");
         add(nameLabel);
-        nameLabel.setBounds(new Rectangle(new Point(10, 15), nameLabel.getPreferredSize()));
+        nameLabel.setBounds(new Rectangle(new Point(2, 15), nameLabel.getPreferredSize()));
         add(ruleNameTextField);
-        ruleNameTextField.setBounds(70, 10, 265, 30);
+        ruleNameTextField.setBounds(90, 10, 350, 30);
 
         scopeComboBox.setModel(new DefaultComboBoxModel<>(Config.scopeArray));
         add(scopeComboBox);
-        scopeComboBox.setBounds(70, 130, 265, scopeComboBox.getPreferredSize().height);
+        scopeComboBox.setBounds(90, 130, 350, scopeComboBox.getPreferredSize().height);
 
         engineComboBox.setModel(new DefaultComboBoxModel<>(Config.engineArray));
         engineComboBox.addActionListener(new ActionListener() {
@@ -70,23 +70,24 @@ public class RuleSetting extends JPanel {
                     sensitiveComboBox.setEnabled(true);
                 } else {
                     sensitiveComboBox.setEnabled(false);
+                    sensitiveComboBox.setSelectedItem(true);
                 }
             }
         });
         add(engineComboBox);
-        engineComboBox.setBounds(70, 170, 265, engineComboBox.getPreferredSize().height);
+        engineComboBox.setBounds(90, 170, 350, engineComboBox.getPreferredSize().height);
 
         colorLabel.setText("Color:");
         add(colorLabel);
-        colorLabel.setBounds(new Rectangle(new Point(10, 95), colorLabel.getPreferredSize()));
+        colorLabel.setBounds(new Rectangle(new Point(2, 95), colorLabel.getPreferredSize()));
 
         colorComboBox.setModel(new DefaultComboBoxModel<>(Config.colorArray));
         add(colorComboBox);
-        colorComboBox.setBounds(70, 90, 265, colorComboBox.getPreferredSize().height);
+        colorComboBox.setBounds(90, 90, 350, colorComboBox.getPreferredSize().height);
 
         sensitiveComboBox.setModel(new DefaultComboBoxModel<>(new Boolean[]{true, false}));
         add(sensitiveComboBox);
-        sensitiveComboBox.setBounds(70,210,265,sensitiveComboBox.getPreferredSize().height);
+        sensitiveComboBox.setBounds(90,210,350,sensitiveComboBox.getPreferredSize().height);
 
         {
             Dimension preferredSize = new Dimension();

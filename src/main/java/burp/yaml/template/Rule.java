@@ -82,12 +82,12 @@ public class Rule {
         r.put("Color", Color);
         r.put("Scope", Scope);
         r.put("Engine", Engine);
-        r.put("Sensitive", Sensitive);
+        r.put("Case Sensitive", Sensitive);
         return r;
     }
 
     @Override
     public String toString() {
-        return "{ \nLoaded: " + Loaded + "\nName: " + Name + "\nRegex: " + Regex + "\nColor: " + Color + "\nScope: " + Scope + "\nEngine: " + Engine + "\nSensitive: " + Sensitive + "\n }";
+        return "{ \nLoaded: " + Loaded + "\nName: " + Name + "\nRegex: " + Regex + "\nColor: " + Color + "\nScope: " + Scope + "\nEngine: " + Engine + "\nCase Sensitive: " + Sensitive + "\n }";
     }
 }

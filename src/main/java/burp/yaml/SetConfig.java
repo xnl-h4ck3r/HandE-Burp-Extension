@@ -88,7 +88,7 @@ public class SetConfig {
         String name = "New ";
         Object[][] data = new Object[][]{
                 {
-                    false, "New Name", "(New Regex)", "gray", "any", "nfa", false
+                    false, "New Name", "(New Regex)", "none", "any", "nfa", false
                 }
         };
         while (Config.ruleConfig.containsKey(name + i)) {

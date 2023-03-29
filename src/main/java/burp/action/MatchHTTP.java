@@ -10,7 +10,7 @@ import burp.yaml.LoadConfig;
  */
 
 public class MatchHTTP {
-    // 匹配后缀
+    // Match suffix
     LoadConfig lc = new LoadConfig();
     public boolean matchSuffix(String str) {
         Pattern pattern = new Pattern(String.format("[\\w]+[\\.](%s)", lc.getExcludeSuffix()), REFlags.IGNORE_CASE);

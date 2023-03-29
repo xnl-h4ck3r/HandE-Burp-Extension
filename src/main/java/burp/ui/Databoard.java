@@ -25,12 +25,12 @@ public class Databoard extends JPanel {
     }
 
     /**
-     * 清空数据
+     * Clear data
      */
     private void clearActionPerformed(ActionEvent e) {
-        // 清空页面
+        // Clear page
         dataTabbedPane.removeAll();
-        // 判断通配符Host/单一Host
+        // Determine wildcard or single host
         String host = hostTextField.getText();
         if(host.contains("*")){
             Map<String, Map<String, List<String>>> ruleMap = Config.globalDataMap;
@@ -80,7 +80,7 @@ public class Databoard extends JPanel {
     }
 
     /**
-     * 获取Host列表
+     * Get the host list
      */
     private static List<String> getHostByList(){
         List<String> hostList = new ArrayList<>();
@@ -89,7 +89,7 @@ public class Databoard extends JPanel {
     }
 
     /**
-     * 设置输入自动匹配
+     * Set input auto-matching
      */
     public static void setAutoMatch(JTextField textField, JTabbedPane tabbedPane) {
         final DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
@@ -118,7 +118,7 @@ public class Databoard extends JPanel {
             }
         });
 
-        // 事件监听
+        // Event listener
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -193,20 +193,20 @@ public class Databoard extends JPanel {
             Map<String, List<String>> selectHost = new HashMap<>();
             String host = hostComboBox.getSelectedItem().toString();
             if (host.contains("*")) {
-                // 通配符数据
+                // Wildcard data
                 Map<String, List<String>> finalSelectHost = selectHost;
                 ruleMap.keySet().forEach(i -> {
                     if (i.contains(host.replace("*.", ""))) {
                         ruleMap.get(i).keySet().forEach(e -> {
                             if (finalSelectHost.containsKey(e)) {
-                                // 合并操作
+                                // Merge operation
                                 List<String> newList = new ArrayList<>(finalSelectHost.get(e));
                                 newList.addAll(ruleMap.get(i).get(e));
-                                // 去重操作
+                                // De-dupe
                                 HashSet tmpList = new HashSet(newList);
                                 newList.clear();
                                 newList.addAll(tmpList);
-                                // 添加操作
+                                // Add operation
                                 finalSelectHost.put(e, newList);
                             } else {
                                 finalSelectHost.put(e, ruleMap.get(i).get(e));
@@ -233,7 +233,7 @@ public class Databoard extends JPanel {
     private JButton clearButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
-    // 是否自动匹配Host
+    // Whether to automatically match Host
     private static Boolean isMatchHost = false;
 }
 class HitRuleDataList extends JTable {

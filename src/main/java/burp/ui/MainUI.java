@@ -45,7 +45,7 @@ public class MainUI extends JPanel{
     }
 
     private void onlineUpdateActionPerformed(ActionEvent e) {
-        // 添加提示框防止用户误触导致配置更新
+        // Add a prompt box to prevent users from accidentally touching the configuration update
         int retCode = JOptionPane.showConfirmDialog(null, "Do you want to update config?", "Info",
                 JOptionPane.YES_NO_CANCEL_OPTION);
         if (retCode == JOptionPane.YES_OPTION) {
@@ -54,7 +54,7 @@ public class MainUI extends JPanel{
             Request httpRequest = new Request.Builder().url(url).get().build();
             try {
                 Response httpResponse = httpClient.newCall(httpRequest).execute();
-                // 获取官方规则文件，在线更新写入
+                // Obtain the official rule file, update and write online
                 String configFile = configTextField.getText();
                 FileOutputStream fileOutputStream = new FileOutputStream(configFile);
                 fileOutputStream.write(httpResponse.body().bytes());
@@ -90,7 +90,7 @@ public class MainUI extends JPanel{
 
     private void excludeSuffixSaveActionPerformed(ActionEvent e) {
         LoadConfig loadCon = new LoadConfig();
-        loadCon.setExcludeSuffix(excludeSuffixTextField.getText());
+        loadCon.setExcludeSuffix(excludeSuffixTextField.getText(), highlightMethodComboBox.getSelectedItem().toString());
     }
     private void initComponents() {
         mainTabbedPane = new JTabbedPane();
@@ -103,6 +103,8 @@ public class MainUI extends JPanel{
         excludeSuffixLabel = new JLabel();
         excludeSuffixTextField = new JTextField();
         excludeSuffixSaveButton = new JButton();
+        highlightMethodLabel = new JLabel();
+        highlightMethodComboBox = new JComboBox<>();
 
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0};
@@ -146,16 +148,26 @@ public class MainUI extends JPanel{
                 excludeSuffixLabel.setText("Exclude Suffix:");
                 rulePanel.add(excludeSuffixLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE,
-                        new Insets(0, 5, 5, 5), 0, 0));
+                        new Insets(5, 5, 5, 5), 0, 0));
                 rulePanel.add(excludeSuffixTextField, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL,
-                        new Insets(0, 0, 0, 5), 0, 0));
+                        new Insets(5, 0, 0, 5), 0, 0));
 
                 excludeSuffixSaveButton.setText("Save");
                 excludeSuffixSaveButton.addActionListener(this::excludeSuffixSaveActionPerformed);
                 rulePanel.add(excludeSuffixSaveButton, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL,
-                        new Insets(0, 0, 0, 5), 0, 0));
+                        new Insets(5, 0, 0, 5), 0, 0));
+
+                highlightMethodLabel.setText("Highlight Method:");
+                rulePanel.add(highlightMethodLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.WEST, GridBagConstraints.NONE,
+                        new Insets(5, 5, 5, 5), 0, 0));
+
+                highlightMethodComboBox.setModel(new DefaultComboBoxModel<>(Config.highlightMethod));;
+                rulePanel.add(highlightMethodComboBox, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.WEST, GridBagConstraints.NONE,
+                        new Insets(5, 0, 0, 5), 0, 0));
             }
             mainTabbedPane.addTab("Config", rulePanel);
             mainTabbedPane.addTab("Databoard", databoardPanel);
@@ -171,6 +183,7 @@ public class MainUI extends JPanel{
 
         configTextField.setText(LoadConfig.getConfigPath());
         excludeSuffixTextField.setText(loadConn.getExcludeSuffix());
+        highlightMethodComboBox.setSelectedItem(loadConn.getHighlightMethod());
         ruleSwitch = new TabTitleEditListener(ruleTabbedPane);
         ruleTabbedPane.addChangeListener(ruleSwitch);
         ruleTabbedPane.addMouseListener(ruleSwitch);
@@ -188,6 +201,8 @@ public class MainUI extends JPanel{
     private JLabel excludeSuffixLabel;
     private JTextField excludeSuffixTextField;
     private JButton excludeSuffixSaveButton;
+    private JLabel highlightMethodLabel;
+    private JComboBox<String> highlightMethodComboBox;
     private Databoard databoardPanel = new Databoard();
     protected static JPopupMenu tabMenu = new JPopupMenu();
     private JMenuItem closeTabMenuItem = new JMenuItem("Delete");
@@ -284,7 +299,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
     }
 
     public void newTab(){
-        Object[][] data = new Object[][]{{false, "New Name", "(New Regex)", "gray", "any", "nfa", false}};
+        Object[][] data = new Object[][]{{false, "New Name", "(New Regex)", "none", "any", "nfa", false}};
         insertTab(ruleEditTabbedPane, setConfig.newRules(),data);
     }
 

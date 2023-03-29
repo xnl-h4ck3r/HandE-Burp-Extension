@@ -17,12 +17,12 @@ import org.yaml.snakeyaml.nodes.Tag;
 
 public class LoadConfig {
     private static final Yaml yaml = new Yaml();
-    private static String HaEConfigPath = String.format("%s/.config/HaE", System.getProperty("user.home"));
+    private static String HaEConfigPath = String.format("%s/.config/H&E", System.getProperty("user.home"));
     private static String SettingPath = String.format("%s/%s", HaEConfigPath, "Setting.yml");
     private static String ConfigPath =  String.format("%s/%s", HaEConfigPath, "Config.yml");
 
     public LoadConfig() {
-        // 构造函数，初始化配置
+        // Constructor, initialize configuration
         File HaEConfigPathFile = new File(HaEConfigPath);
         if (!(HaEConfigPathFile.exists() && HaEConfigPathFile.isDirectory())) {
             HaEConfigPathFile.mkdirs();
@@ -37,11 +37,12 @@ public class LoadConfig {
     }
 
 
-    // 初始化设置信息
+    // Initialize setting information
     public void initSetting() {
         Map<String, Object> r = new HashMap<>();
         r.put("configPath", ConfigPath);
         r.put("excludeSuffix", getExcludeSuffix());
+        r.put("highlightMethod", getHighlightMethod());
         try {
             Writer ws = new OutputStreamWriter(new FileOutputStream(SettingPath), StandardCharsets.UTF_8);
             yaml.dump(r, ws);
@@ -50,7 +51,7 @@ public class LoadConfig {
         }
     }
 
-    // 初始化规则配置
+    // Initialize rule configuration
     public void initRules() {
         Rule rule = new Rule();
         rule.setLoaded(true);
@@ -86,7 +87,7 @@ public class LoadConfig {
         }
     }
 
-    // 获取配置路径
+    // Get configuration path
     public static String getConfigPath(){
         try {
             InputStream inorder = new FileInputStream(SettingPath);
@@ -99,7 +100,26 @@ public class LoadConfig {
 
     }
 
-    // 获取不包含的后缀名
+    // Ge the color highlighting setting
+    public String getHighlightMethod(){
+        String highlightMethod = Config.highlightMethod[0];
+        File yamlSetting = new File(SettingPath);
+        if (yamlSetting.exists() && yamlSetting.isFile()) {
+            try {
+                InputStream inorder = new FileInputStream(SettingPath);
+                Map<String,Object> r = yaml.load(inorder);
+                highlightMethod = r.get("highlightMethod").toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+                highlightMethod = Config.highlightMethod[0];
+            }
+        } else {
+            highlightMethod = Config.highlightMethod[0];
+        }
+        return highlightMethod;
+    }
+
+    // Get the suffix to exclude
     public String getExcludeSuffix(){
         String excludeSuffix = "";
         File yamlSetting = new File(SettingPath);
@@ -109,7 +129,7 @@ public class LoadConfig {
                 Map<String,Object> r = yaml.load(inorder);
                 excludeSuffix = r.get("excludeSuffix").toString();
             } catch (Exception e) {
-                // e.printStackTrace();
+                e.printStackTrace();
                 excludeSuffix = "";
             }
         } else {
@@ -118,7 +138,7 @@ public class LoadConfig {
         return excludeSuffix;
     }
 
-    // 获取规则配置
+    // Get rule configuration
     public static Map<String,Object[][]> getRules(){
         InputStream inorder = null;
         {
@@ -146,11 +166,12 @@ public class LoadConfig {
     }
 
 
-    // 设置不包含的后缀名
-    public void setExcludeSuffix(String excludeSuffix){
+    // Set the file exclusion list
+    public void setExcludeSuffix(String excludeSuffix, String highlightMethod){
         Map<String,Object> r = new HashMap<>();
         r.put("configPath", getConfigPath());
         r.put("excludeSuffix", excludeSuffix);
+        r.put("highlightMethod", highlightMethod);
         try{
             Writer ws = new OutputStreamWriter(new FileOutputStream(SettingPath), StandardCharsets.UTF_8);
             yaml.dump(r, ws);

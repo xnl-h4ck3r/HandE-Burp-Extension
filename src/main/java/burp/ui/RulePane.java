@@ -25,6 +25,9 @@ public class RulePane extends JPanel {
 
     private void ruleAddActionPerformed(ActionEvent e, JTabbedPane pane) {
         RuleSetting ruleSettingPanel = new RuleSetting();
+        ruleSettingPanel.ruleNameTextField.setText("New Rule");
+        ruleSettingPanel.regexTextField.setText("(REMEMBER TO PUT BRACKETS AROUND IT!)");
+        ruleSettingPanel.colorComboBox.setSelectedItem("none");
         int showState = JOptionPane.showConfirmDialog(null, ruleSettingPanel, "RuleSetting - Add Rule", JOptionPane.OK_OPTION);
         if(showState == 0){
             Vector ruleData = new Vector();
@@ -51,9 +54,12 @@ public class RulePane extends JPanel {
             ruleSettingPanel.engineComboBox.setSelectedItem(ruleTable.getValueAt(ruleTable.getSelectedRow(), 5).toString());
             ruleSettingPanel.sensitiveComboBox.setSelectedItem(ruleTable.getValueAt(ruleTable.getSelectedRow(),6));
 
-            ruleSettingPanel.sensitiveComboBox.setEnabled(
-                ruleSettingPanel.engineComboBox.getSelectedItem().toString().equals("nfa")
-            );
+            if (ruleSettingPanel.engineComboBox.getSelectedItem().toString().equals("nfa")) {
+                ruleSettingPanel.sensitiveComboBox.setEnabled(true);
+            } else {
+                ruleSettingPanel.sensitiveComboBox.setEnabled(false);
+                ruleSettingPanel.sensitiveComboBox.setSelectedItem(true);
+            }
 
             int showState = JOptionPane.showConfirmDialog(null, ruleSettingPanel, "RuleSetting - Edit Rule", JOptionPane.OK_OPTION);
             if (showState == 0){
@@ -62,8 +68,8 @@ public class RulePane extends JPanel {
                 model.setValueAt(ruleSettingPanel.regexTextField.getText(), select, 2);
                 model.setValueAt(ruleSettingPanel.colorComboBox.getSelectedItem().toString(), select, 3);
                 model.setValueAt(ruleSettingPanel.scopeComboBox.getSelectedItem().toString(), select, 4);
-                model.setValueAt(ruleSettingPanel.engineComboBox.getSelectedItem().toString(), select, 5);
                 model.setValueAt(ruleSettingPanel.sensitiveComboBox.getSelectedItem(), select, 6);
+                model.setValueAt(ruleSettingPanel.engineComboBox.getSelectedItem().toString(), select, 5);
                 model = (DefaultTableModel) ruleTable.getModel();
                 setConfig.edit((Vector) model.getDataVector().get(select), select, pane.getTitleAt(pane.getSelectedIndex()));
             }
@@ -191,7 +197,7 @@ public class RulePane extends JPanel {
     public JTable ruleTable;
     public JButton removeButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
-    private final String[] title = new String[]{"Loaded", "Name", "Regex", "Color", "Scope", "Engine", "Sensitive"};
+    private final String[] title = new String[]{"Loaded", "Name", "Regex", "Color", "Scope", "Engine", "Case Sensitive"};
     private DefaultTableModel model = new DefaultTableModel() {
         @Override
         public Class<?> getColumnClass (int column){
